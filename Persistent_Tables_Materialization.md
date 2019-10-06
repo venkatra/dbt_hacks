@@ -2,11 +2,11 @@
 
 ## DBT
 
-[DBT](https://www.getdbt.com/product/) is a command line tool based of SQL primrarily
+[DBT](https://www.getdbt.com/product/) is a command line tool based of SQL primarily
 used by Analyst to do data-transformation. In other words it does the
 'T' in ELT.
 
-It facilitates in writing modular SELECT SQLs and takes care of depedency
+It facilitates in writing modular SELECT SQLs and takes care of dependency
 ,compilation ,materialization in run time.
 
 ![DBT product](./doc/images/dbt_product.svg)
@@ -59,7 +59,7 @@ and issue an alter statement accordingly.
 - Backup the table before doing any modifications.
 - Migrate the data after the table has been modified.
 
-Its possible to acheive this and I start of by explaining as below. Also
+It’s possible to achieve this and I start by explaining as below. Also
 I am using snowflake as the choice of database, you might need to change 
 it accordingly.
 
@@ -248,6 +248,6 @@ CI/CD pipeline for database objects.
 I can think of the following as a limitation
 - You cannot use this model in a 'source' or a 'ref' call
 - Do not ask DBT to do a 'run' across all the model. This might result in 
-recreating the tables accidentally, ofcourse backup could exist if the flags were set.
+recreating the tables accidentally, of course backup could exist if the flags were set.
 
 
