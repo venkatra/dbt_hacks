@@ -1,0 +1,23 @@
+
+# For more information on how to configure this file, please see:
+# https://docs.getdbt.com/docs/profile
+
+#Ref : https://docs.getdbt.com/docs/configure-your-profile
+#dbt run --profiles-dir path/to/directory
+#export DBT_PROFILES_DIR=path/to/directory
+
+
+default:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWSQL_ACCOUNT') }}"
+      user: "{{ env_var('SNOWSQL_USER') }}"
+      password: "{{ env_var('DBT_PASSWORD') }}"
+      role: "{{ env_var('SNOWSQL_ROLE') }}"
+      database: "{{ env_var('SNOWSQL_DATABASE') }}"
+      warehouse: "{{ env_var('SNOWSQL_WAREHOUSE') }}"
+      schema: PUBLIC
+      threads: 1
+      client_session_keep_alive: False

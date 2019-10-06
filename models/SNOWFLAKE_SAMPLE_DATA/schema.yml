@@ -1,0 +1,11 @@
+
+version: 2
+
+sources:
+  - name: SNOWFLAKE_SAMPLE_DATA
+    description: the snowflake sample dataset.
+    database: SNOWFLAKE_SAMPLE_DATA
+    schema: TPCDS_SF100TCL
+    tables:
+      - name: CUSTOMER
+      - name: CUSTOMER_ADDRESS
