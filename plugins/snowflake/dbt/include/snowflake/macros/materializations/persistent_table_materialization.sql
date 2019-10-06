@@ -1,21 +1,11 @@
 /*
   This materialization is used for creating persistent table.
-  Much of this implementation is based of
-   - https://github.com/fishtown-analytics/dbt/blob/0.14.latest/core/dbt/include/global_project/macros/materializations/table/table.sql
-   - https://github.com/fishtown-analytics/dbt/blob/0.14.latest/plugins/snowflake/dbt/include/snowflake/macros/materializations/table.sql
-   - https://github.com/fishtown-analytics/dbt/blob/f9c8442260e48bdd8bb7805b2e7541ab91492bb1/plugins/snowflake/dbt/include/snowflake/macros/materializations/incremental.sql
+  The idea behind this materialization is for ability to define CREATE TABLE statements and have DBT the necessary logic
+  of deploying the table in a consistent manner and logic. Some concepts have been borrowed from 'incremental' materialization:
 
-  The variation in this materialization is that unlike the above mentioned table;
-    - Meant for source or auxillary table.
-    - Facilitates to retain a previous state of the table, by backing up before the table is altered.
-  The reason for retaining is to prevent accidental deletion or not loosing data and doing some post hook processing logic.
+   - https://github.com/fishtown-analytics/dbt/blob/0.14.latest/plugins/snowflake/dbt/include/snowflake/macros/materializations/incremental.sql
 
-  In database like snowflake timetravel functionality can mitigate this; but I choose this approach over time travel
-  as a safe measure and letting the user decide if they do want to delete it. Another reason is in giving an example for
-  adopting to other databases (ex: postgres).
-
-  Deletion can be done via a post_hook method. Also the config option 'retain_previous_version' can also be used to
-  dictate if copy is needed or not.
+  Please read the markdown 'Persistent_Tables_Materialization.md' for a better reasoning behind this materialization.
 
 */
 {% materialization persistent_table, adapter='snowflake' %}
@@ -69,7 +59,9 @@
 
     -- build model
     {% if full_refresh_mode or current_relation is none -%}
-        -- , fetch_result=False , auto_begin=False
+        -- drop the relation incase if the stmt happens to be CREATE IF NOT EXISTS
+        {{ adapter.drop_relation(current_relation) }}
+
         {%- call statement('main') -%}
             {{ create_table_stmt_fromfile(target_relation, sql) }}
         {%- endcall -%}
@@ -132,11 +124,9 @@
     {%- endif %}
 
 
-
     {% if retain_previous_version_flg == False %}
         {{ adapter.drop_relation(backup_relation) }}
     {% endif %}
-
 
    --------------------------------------------------------------------------------------------------------------------
 
