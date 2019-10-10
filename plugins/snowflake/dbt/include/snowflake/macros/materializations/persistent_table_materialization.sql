@@ -59,8 +59,6 @@
 
     -- build model
     {% if full_refresh_mode or current_relation is none -%}
-        -- drop the relation incase if the stmt happens to be CREATE IF NOT EXISTS
-        {{ adapter.drop_relation(current_relation) }}
 
         {%- call statement('main') -%}
             {{ create_table_stmt_fromfile(target_relation, sql) }}
