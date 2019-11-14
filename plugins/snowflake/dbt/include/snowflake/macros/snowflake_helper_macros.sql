@@ -33,3 +33,17 @@
     ;
 
 {%- endmacro -%}
+
+
+{%- macro create_stmt_fromfile(sql) -%}
+    {{ sql.upper() }}
+    ;
+
+{%- endmacro -%}
+
+{%- macro create_stage_stmt_fromfile(sql) -%}
+    {{ log("Creating stage " ~ relation) }}
+    {{ sql }}
+{%- endmacro -%}
+
+
